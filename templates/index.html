@@ -190,6 +190,15 @@
                     <div id="api-result" class="api-result"></div>
                 </div>
             </div>
+<div class="card">
+    <h2>🙋 My Name API</h2>
+    <p>Click to fetch my name from the backend:</p>
+    <div class="api-demo">
+        <button class="button" onclick="fetchMyName()">Fetch My Name</button>
+        <div id="myname-result" class="api-result"></div>
+    </div>
+</div>
+
             
             <div class="card">
                 <h2>📚 Useful Links</h2>
@@ -198,6 +207,7 @@
                     <li><a href="/ready" target="_blank">Readiness Check</a></li>
                     <li><a href="/info" target="_blank">System Information (JSON)</a></li>
                     <li><a href="/api/data" target="_blank">API Data Fetch</a></li>
+                    <li><a href="/api/myname" target="_blank">My Name API</a></li>
                 </ul>
             </div>
         </div>
@@ -244,6 +254,34 @@
             button.textContent = 'Fetch API Data';
             button.disabled = false;
         }
+
+          // 🔹 New function for /api/myname
+    async function fetchMyName() {
+        const resultDiv = document.getElementById('myname-result');
+        const button = document.querySelector('button[onclick="fetchMyName()"]');
+
+        button.textContent = 'Loading...';
+        button.disabled = true;
+
+        try {
+            const response = await fetch('/api/myname');
+            const data = await response.json();
+
+            resultDiv.innerHTML = `
+                <h3>My Name API Response:</h3>
+                <p><strong>Name:</strong> ${data.name}</p>
+                <p><strong>Server:</strong> ${data.server}</p>
+                <p><strong>Timestamp:</strong> ${data.timestamp}</p>
+            `;
+            resultDiv.style.display = 'block';
+        } catch (error) {
+            resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            resultDiv.style.display = 'block';
+        }
+
+        button.textContent = 'Fetch My Name';
+        button.disabled = false;
+    }
         
         // Auto-refresh system info every 30 seconds
         setInterval(() => {
